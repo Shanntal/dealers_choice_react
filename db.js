@@ -4,7 +4,7 @@
 //new Sequelize
 
 const Sequelize = require('sequelize')
-const conn = new Sequelize('postgres://localhost:3000/student_profiles')
+const conn = new Sequelize('postgres://localhost:5432/student_profiles')
 
 
 const Student_Profile = conn.define('student_profile', {
@@ -22,11 +22,11 @@ const Student_Profile = conn.define('student_profile', {
       }
     },
     sports: {
-        type: Sequelize.DataTypes.BLOB,
+        type: Sequelize.DataTypes.STRING,
         allowNull: true
     },
     awards: {
-        type: Sequelize.DataTypes.BLOB,
+        type: Sequelize.DataTypes.STRING,
         allowNull: true
     },
     grade: {
@@ -79,7 +79,6 @@ const syncAndSeed = async() => {
 module.exports = {
     conn,
     syncAndSeed,
-    models: {
-            Student_Profile
-    }
+    Student_Profile,
+    data
 };

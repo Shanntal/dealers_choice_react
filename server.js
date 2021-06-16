@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const app = express();
-const { conn, syncAndSeed, models: { Student_Profile } } = require('./db');
+const { syncAndSeed, Student_Profile } = require('./db');
 
 const PUBLIC_PATH = path.join(__dirname, './public');
 const DIST_PATH = path.join(__dirname, './dist');
@@ -11,8 +11,14 @@ app.use(express.static(PUBLIC_PATH));
 app.use(express.static(DIST_PATH));
 
 //write routes here
+app.get('/api', async(req, res, next) => {
+    const data = await Student_Profile.findAll();
+    res.send(data);
+})
+
 
 app.get('/', (req, res, next) => {
+  //res.send('hello');
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
@@ -22,9 +28,9 @@ app.get('/', (req, res, next) => {
 
 const init = async() => {
     try {
-        await conn.syncAndSeed();
+        await syncAndSeed();
         const PORT = 3000;
-        server.listen(PORT, () => {
+        app.listen(PORT, () => {
             console.log(`Server listening on PORT: ${PORT}`);
         });
     }
